@@ -180,7 +180,13 @@
     <script src="https://www.gstatic.com/firebasejs/10.14.0/firebase-firestore.js"></script>
     <script>
         const firebaseConfig = {
-            // Твои настройки Firebase нужно вставить сюда
+            apiKey: "AIzaSyCmv0bj3l2fDUQe6-xzlkpEu5r_Qdbpm7w",
+            authDomain: "floperin-559d7.firebaseapp.com",
+            projectId: "floperin-559d7",
+            storageBucket: "floperin-559d7.firebasestorage.app",
+            messagingSenderId: "313128941793",
+            appId: "1:313128941793:web:2a33815852477fa136dfa0",
+            measurementId: "G-LCZJLT5JJE"
         };
 
         firebase.initializeApp(firebaseConfig);
@@ -212,7 +218,7 @@
             document.getElementById(tab).classList.add('active');
         }
 
-        window.onclick = function(event) {
+        window onclick = function(event) {
             if (event.target == document.getElementById('authModal')) {
                 document.getElementById('authModal').style.display = 'none';
             }
