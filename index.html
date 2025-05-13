@@ -47,6 +47,17 @@
         .user-text {
             color: white;
             font-size: 14px;
+            display: flex;
+            flex-direction: column;
+            text-align: right;
+        }
+
+        .user-text .name {
+            font-weight: bold;
+        }
+
+        .user-text .username {
+            opacity: 0.8;
         }
 
         .avatar {
@@ -147,7 +158,7 @@
     <header class="header">
         <h1>Flopr</h1>
         <div class="user-info">
-            <span class="user-text">Войдите или зарегистрируйтесь!</span>
+            <span class="user-text" id="userText">Войдите или зарегистрируйтесь!</span>
             <div class="avatar"></div>
         </div>
     </header>
@@ -177,7 +188,38 @@
         </div>
     </div>
 
-    <script>
+    <script type="text/javascript" src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js"></script>
+    <script type="text/javascript" src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js"></script>
+    <script type="text/javascript" src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js"></script>
+    <script type="text/javascript">
+        const firebaseConfig = {
+            apiKey: "AIzaSyCmv0bj3l2fDUQe6-xzlkpEu5r_Qdbpm7w",
+            authDomain: "floperin-559d7.firebaseapp.com",
+            projectId: "floperin-559d7",
+            storageBucket: "floperin-559d7.firebasestorage.app",
+            messagingSenderId: "313128941793",
+            appId: "1:313128941793:web:2a33815852477fa136dfa0",
+            measurementId: "G-LCZJLT5JJE"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+
+        function googleSignIn() {
+            const provider = new firebase.auth.GoogleAuthProvider();
+            auth.signInWithPopup(provider).then((result) => {
+                const user = result.user;
+                db.collection("users").doc(user.uid).set({
+                    name: user.displayName,
+                    email: user.email,
+                    username: user.email.split("@")[0]
+                }, { merge: true });
+            }).catch((error) => {
+                console.error(error);
+            });
+        }
+
         function openModal() {
             document.getElementById('authModal').style.display = 'block';
         }
@@ -189,10 +231,30 @@
             document.getElementById(tab).classList.add('active');
         }
 
-        document.querySelector('.user-info').addEventListener('click', openModal);
+        auth.onAuthStateChanged((user) => {
+            const userText = document.getElementById('userText');
+            if (user) {
+                db.collection("users").doc(user.uid).get().then((doc) => {
+                    if (doc.exists) {
+                        const data = doc.data();
+                        userText.innerHTML = `<span class="name">${data.name}</span><span class="username">@${data.username}</span>`;
+                    }
+                });
+                document.querySelector('.user-info').removeEventListener('click', openModal);
+            } else {
+                userText.innerHTML = 'Войдите или зарегистрируйтесь!';
+                document.querySelector('.user-info').addEventListener('click', openModal);
+            }
+        });
+
         document.querySelectorAll('.tab').forEach(tab => {
             tab.addEventListener('click', () => showTab(tab.dataset.tab));
         });
+
+        document.querySelectorAll('.google-btn').forEach(btn => {
+            btn.addEventListener('click', googleSignIn);
+        });
+
         window.onclick = function(event) {
             if (event.target == document.getElementById('authModal')) {
                 document.getElementById('authModal').style.display = 'none';
