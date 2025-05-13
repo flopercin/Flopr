@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Flopr</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌿</text></svg>">
     <style>
         * {
             margin: 0;
@@ -144,7 +145,7 @@
 <body>
     <header class="header">
         <h1>Flopr</h1>
-        <div class="user-info" onclick="openModal()">
+        <div class="user-info">
             <span class="user-text">Войдите или зарегистрируйтесь!</span>
             <div class="avatar"></div>
         </div>
@@ -163,14 +164,14 @@
     <div class="modal" id="authModal">
         <div class="modal-content">
             <div class="tabs">
-                <div class="tab active" onclick="showTab('login')">Вход</div>
-                <div class="tab" onclick="showTab('register')">Регистрация</div>
+                <div class="tab active" data-tab="login">Вход</div>
+                <div class="tab" data-tab="register">Регистрация</div>
             </div>
             <div class="tab-content active" id="login">
-                <button class="google-btn" onclick="googleSignIn()"><i class="fab fa-google"></i> Войти через Google</button>
+                <button class="google-btn"><i class="fab fa-google"></i> Войти через Google</button>
             </div>
             <div class="tab-content" id="register">
-                <button class="google-btn" onclick="googleSignIn()"><i class="fab fa-google"></i> Зарегистрироваться через Google</button>
+                <button class="google-btn"><i class="fab fa-google"></i> Зарегистрироваться через Google</button>
             </div>
         </div>
     </div>
@@ -214,15 +215,22 @@
         function showTab(tab) {
             document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
             document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-            document.querySelector(`.tab[onclick="showTab('${tab}')"]`).classList.add('active');
+            document.querySelector(`.tab[data-tab="${tab}"]`).classList.add('active');
             document.getElementById(tab).classList.add('active');
         }
 
-        window onclick = function(event) {
+        document.querySelector('.user-info').addEventListener('click', openModal);
+        document.querySelectorAll('.tab').forEach(tab => {
+            tab.addEventListener('click', () => showTab(tab.dataset.tab));
+        });
+        document.querySelectorAll('.google-btn').forEach(btn => {
+            btn.addEventListener('click', googleSignIn);
+        });
+        window.onclick = function(event) {
             if (event.target == document.getElementById('authModal')) {
                 document.getElementById('authModal').style.display = 'none';
             }
-        }
+        };
     </script>
 </body>
 </html>
