@@ -35,6 +35,29 @@
             font-size: 24px;
         }
 
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .user-text {
+            display: flex;
+            flex-direction: column;
+            color: white;
+            text-align: right;
+        }
+
+        .user-text .name {
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .user-text .username {
+            font-size: 14px;
+            opacity: 0.8;
+        }
+
         .avatar {
             width: 40px;
             height: 40px;
@@ -69,7 +92,13 @@
 <body>
     <header class="header">
         <h1>Flopr</h1>
-        <div class="avatar"></div>
+        <div class="user-info">
+            <div class="user-text">
+                <span class="name">Алексей</span>
+                <span class="username">@AlekseyUs</span>
+            </div>
+            <div class="avatar"></div>
+        </div>
     </header>
 
     <main class="main-content">
