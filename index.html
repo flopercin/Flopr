@@ -44,7 +44,7 @@
 
         .user-text {
             color: white;
-            font-size: 16px;
+            font-size: 14px;
         }
 
         .avatar {
@@ -145,7 +145,7 @@
     <header class="header">
         <h1>Flopr</h1>
         <div class="user-info" onclick="openModal()">
-            <span class="user-text">Зарегистрируйтесь или войдите в аккаунт бесплатно!</span>
+            <span class="user-text">Войдите или зарегистрируйтесь!</span>
             <div class="avatar"></div>
         </div>
     </header>
@@ -167,15 +167,40 @@
                 <div class="tab" onclick="showTab('register')">Регистрация</div>
             </div>
             <div class="tab-content active" id="login">
-                <button class="google-btn"><i class="fab fa-google"></i> Войти через Google</button>
+                <button class="google-btn" onclick="googleSignIn()"><i class="fab fa-google"></i> Войти через Google</button>
             </div>
             <div class="tab-content" id="register">
-                <button class="google-btn"><i class="fab fa-google"></i> Зарегистрироваться через Google</button>
+                <button class="google-btn" onclick="googleSignIn()"><i class="fab fa-google"></i> Зарегистрироваться через Google</button>
             </div>
         </div>
     </div>
 
+    <script src="https://www.gstatic.com/firebasejs/10.14.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.14.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.14.0/firebase-firestore.js"></script>
     <script>
+        const firebaseConfig = {
+            // Твои настройки Firebase нужно вставить сюда
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+
+        function googleSignIn() {
+            const provider = new firebase.auth.GoogleAuthProvider();
+            auth.signInWithPopup(provider).then((result) => {
+                const user = result.user;
+                db.collection("users").doc(user.uid).set({
+                    name: user.displayName,
+                    email: user.email,
+                    username: user.email.split("@")[0]
+                }, { merge: true });
+            }).catch((error) => {
+                console.error(error);
+            });
+        }
+
         function openModal() {
             document.getElementById('authModal').style.display = 'block';
         }
