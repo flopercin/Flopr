@@ -5,12 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Flopr</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-    <!-- Firebase SDK -->
-    <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js"></script>
+    <!-- Firebase CDN (единый бандл) -->
+    <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js"></script>
     <style>
-        /* Твой текущий CSS без изменений */
         * {
             margin: 0;
             padding: 0;
@@ -49,7 +48,11 @@
 
         .user-text {
             color: white;
-            font-size: 16px;
+            font-size: 14px; /* Уменьшенный размер шрифта */
+            max-width: 150px; /* Ограничение ширины текста */
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
         .avatar {
@@ -275,7 +278,7 @@
 
         // Открытие модального окна
         function openModal() {
-            if (!auth.currentUser) {
+            if (auth && !auth.currentUser) {
                 document.getElementById('authModal').style.display = 'block';
             }
         }
