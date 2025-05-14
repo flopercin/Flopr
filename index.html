@@ -9,11 +9,13 @@
     <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js"></script>
+    <!-- Google Sign-In -->
+    <script src="https://accounts.google.com/gsi/client"></script>
     <style>
         * {
             margin: 0;
             padding: 0;
-            box-sizing: border*TODOTODO-box;
+            box-sizing: border-box;
             font-family: Arial, sans-serif;
         }
 
@@ -42,15 +44,20 @@
         .user-info {
             display: flex;
             align-items: center;
-            gap: 5px; /* Уменьшенный отступ */
-            cursor: pointer;
+            gap: 5px;
+            cursor
+
+: pointer;
+            max-width: 200px;
+            justify-content: flex-end;
         }
 
         .user-text {
             color: white;
-            font-size: 10px; /* Уменьшенный размер шрифта */
-            max-width: 120px; /* Ограничение ширины для переноса строки */
-            white-space: normal; /* Разрешить перенос строки */
+            font-size: 10px;
+            max-width: 100px;
+            white-space: normal;
+            text-align: right;
         }
 
         .avatar {
@@ -76,14 +83,25 @@
             bottom: 0;
             width: 100%;
             display: flex;
-            justify-content: space-around;
+            justify-content: space-between;
             align-items: center;
+            padding-left: 10px; /* Сдвиг влево */
         }
 
         .footer a {
             color: white;
             font-size: 24px;
             text-decoration: none;
+        }
+
+        .plus-btn {
+            border: 2px solid white;
+            border-radius: 50%;
+            width: 36px;
+            height: 36px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
         .modal {
@@ -135,20 +153,6 @@
             display: block;
         }
 
-        .google-btn {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            padding: 10px;
-            background-color: #fff;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
-            margin-top: 20px;
-        }
-
         .logout-btn {
             background-color: #ff4444;
             color: white;
@@ -189,10 +193,34 @@
                 <div class="tab" onclick="showTab('register')">Регистрация</div>
             </div>
             <div class="tab-content active" id="login">
-                <button class="google-btn" onclick="signInWithGoogle()"><i class="fab fa-google"></i> Войти через Google</button>
+                <div id="g_id_onload"
+                     data-client_id="313128941793-nt4aclh5pca02d3p651v9r8fb3cqtsdh.apps.googleusercontent.com"
+                     data-callback="handleCredentialResponse"
+                     data-auto_prompt="false">
+                </div>
+                <div class="g_id_signin"
+                     data-type="standard"
+                     data-size="large"
+                     data-theme="outline"
+                     data-text="sign_in_with"
+                     data-shape="rectangular"
+                     data-logo_alignment="left">
+                </div>
             </div>
             <div class="tab-content" id="register">
-                <button class="google-btn" onclick="signInWithGoogle()"><i class="fab fa-google"></i> Зарегистрироваться через Google</button>
+                <div id="g_id_onload"
+                     data-client_id="313128941793-nt4aclh5pca02d3p651v9r8fb3cqtsdh.apps.googleusercontent.com"
+                     data-callback="handleCredentialResponse"
+                     data-auto_prompt="false">
+                </div>
+                <div class="g_id_signin"
+                     data-type="standard"
+                     data-size="large"
+                     data-theme="outline"
+                     data-text="sign_in_with"
+                     data-shape="rectangular"
+                     data-logo_alignment="left">
+                </div>
             </div>
         </div>
     </div>
@@ -205,7 +233,7 @@
             projectId: "floperin-559d7",
             storageBucket: "floperin-559d7.firebasestorage.app",
             messagingSenderId: "313128941793",
-            appId: "1:313128941793:web:2a33815852477fa136dfa0",
+            appId: "1:313128941793:web:2a33815852477fa136dfa v2: https://flopercin.github.io/Flopr/
             measurementId: "G-LCZJLT5JJE"
         };
 
@@ -214,23 +242,23 @@
         const auth = firebase.auth();
         const db = firebase.firestore();
 
-        // Вход через Google
-        function signInWithGoogle() {
-            const provider = new firebase.auth.GoogleAuthProvider();
-            console.log("Начинается вход через Google с signInWithPopup");
-            auth.signInWithPopup(provider)
-                .then((result) => {
-                    console.log("Успешный вход:", result.user);
-                    const user = result.user;
-                    saveUserToFirestore(user);
-                    updateUI(user);
-                    document.getElementById('authModal').style.display = 'none';
-                })
-                .catch((error) => {
-                    console.error("Ошибка входа:", error);
-                    alert("Ошибка входа: " + error.message);
-                });
-        }
+        // Обработка ответа Google Sign-In
+        window.handleCredentialResponse = async (response) => {
+            try {
+                console.log("Google Sign-In Response:", response);
+                const idToken = response.credential;
+                const credential = firebase.auth.GoogleAuthProvider.credential(idToken);
+                const result = await auth.signInWithCredential(credential);
+                console.log("Sign-in result:", result);
+                const user = result.user;
+                saveUserToFirestore(user);
+                updateUI(user);
+                document.getElementById('authModal').style.display = 'none';
+            } catch (error) {
+                console.error("Ошибка входа:", error);
+                alert("Ошибка входа: " + error.message);
+            }
+        };
 
         // Сохранение данных пользователя в Firestore
         function saveUserToFirestore(user) {
@@ -301,4 +329,4 @@
         }
     </script>
 </body>
-            </html>
+</html>
