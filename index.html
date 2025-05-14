@@ -20,21 +20,6 @@
                 const credential = firebase.auth.GoogleAuthProvider.credential(idToken);
                 const result = await firebase.auth().signInWithCredential(credential);
                 console.log("Sign-in result:", result);
-                const user = result.user;
-                // Сохраняем пользователя в Firestore
-                firebase.firestore().collection("users").doc(user.uid).set({
-                    displayName: user.displayName,
-                    email: user.email,
-                    photoURL: user.photoURL,
-                    lastLogin: firebase.firestore.FieldValue.serverTimestamp()
-                }, { merge: true })
-                    .then(() => console.log("Пользователь сохранен в Firestore"))
-                    .catch((error) => console.error("Ошибка сохранения в Firestore:", error));
-                // Обновляем UI
-                document.getElementById('userText').textContent = user.displayName || 'Пользователь';
-                document.getElementById('userAvatar').style.backgroundImage = `url(${user.photoURL})`;
-                document.getElementById('logoutBtn').style.display = 'block';
-                // Закрываем модальное окно
                 document.getElementById('authModal').style.display = 'none';
             } catch (error) {
                 console.error("Ошибка входа:", error);
@@ -192,6 +177,68 @@
             font-size: 16px;
             margin-left: 10px;
         }
+
+        /* Стили для модального окна профиля */
+        .profile-modal-content {
+            padding: 20px;
+            text-align: center;
+        }
+
+        .profile-modal-content h2 {
+            margin-bottom: 20px;
+            color: #4caf50;
+        }
+
+        .profile-modal-content input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        .avatar-gallery {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+            margin: 20px 0;
+        }
+
+        .avatar-option {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background-size: cover;
+            background-position: center;
+            cursor: pointer;
+            border: 2px solid transparent;
+        }
+
+        .avatar-option.selected {
+            border-color: #4caf50;
+        }
+
+        .save-profile-btn {
+            background-color: #4caf50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .save-profile-btn:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+
+        .error-message {
+            color: #ff4444;
+            font-size: 14px;
+            margin-top: 10px;
+        }
     </style>
 </head>
 <body>
@@ -215,6 +262,7 @@
         <a href="#"><i class="fas fa-cog"></i></a>
     </footer>
 
+    <!-- Модальное окно для входа/регистрации -->
     <div class="modal" id="authModal">
         <div class="modal-content">
             <div class="tabs">
@@ -254,6 +302,20 @@
         </div>
     </div>
 
+    <!-- Модальное окно для настройки профиля -->
+    <div class="modal" id="profileModal">
+        <div class="modal-content profile-modal-content">
+            <h2>Настройка профиля</h2>
+            <input type="text" id="profileName" placeholder="Ваше имя">
+            <input type="text" id="profileUsername" placeholder="Юзернейм">
+            <div class="avatar-gallery" id="avatarGallery">
+                <!-- Аватарки будут добавлены через JS -->
+            </div>
+            <button class="save-profile-btn" id="saveProfileBtn" disabled>Сохранить</button>
+            <p class="error-message" id="usernameError"></p>
+        </div>
+    </div>
+
     <script>
         // Firebase конфигурация
         const firebaseConfig = {
@@ -270,6 +332,14 @@
         firebase.initializeApp(firebaseConfig);
         const auth = firebase.auth();
         const db = firebase.firestore();
+
+        // Список аватарок для галереи (замени на свои URL)
+        const avatarOptions = [
+            'https://via.placeholder.com/60/FF0000/FFFFFF?text=A1',
+            'https://via.placeholder.com/60/00FF00/FFFFFF?text=A2',
+            'https://via.placeholder.com/60/0000FF/FFFFFF?text=A3',
+            'https://via.placeholder.com/60/FFFF00/FFFFFF?text=A4'
+        ];
 
         // Обновление UI после входа
         function updateUI(user) {
@@ -300,13 +370,109 @@
                 });
         });
 
-        // Слушатель состояния аутентификации
-        auth.onAuthStateChanged((user) => {
+        // Проверка нового пользователя и показ модального окна профиля
+        auth.onAuthStateChanged(async (user) => {
             console.log("Auth state changed:", user);
             updateUI(user);
+            if (user) {
+                const userDoc = await db.collection('users').doc(user.uid).get();
+                if (!userDoc.exists) {
+                    // Новый пользователь, показываем модальное окно
+                    document.getElementById('profileModal').style.display = 'block';
+                    const profileName = document.getElementById('profileName');
+                    const profileUsername = document.getElementById('profileUsername');
+                    const avatarGallery = document.getElementById('avatarGallery');
+                    const saveProfileBtn = document.getElementById('saveProfileBtn');
+                    const usernameError = document.getElementById('usernameError');
+
+                    // Заполняем начальные данные из Google
+                    profileName.value = user.displayName || '';
+                    profileUsername.value = user.displayName ? user.displayName.replace(/\s+/g, '').toLowerCase() : '';
+                    let selectedAvatar = user.photoURL || avatarOptions[0];
+
+                    // Создаём галерею аватарок
+                    avatarGallery.innerHTML = '';
+                    avatarOptions.forEach((url, index) => {
+                        const avatarDiv = document.createElement('div');
+                        avatarDiv.className = 'avatar-option';
+                        avatarDiv.style.backgroundImage = `url(${url})`;
+                        if (url === selectedAvatar) {
+                            avatarDiv.className += ' selected';
+                        }
+                        avatarDiv.addEventListener('click', () => {
+                            document.querySelectorAll('.avatar-option').forEach(opt => opt.classList.remove('selected'));
+                            avatarDiv.classList.add('selected');
+                            selectedAvatar = url;
+                            saveProfileBtn.disabled = false;
+                        });
+                        avatarGallery.appendChild(avatarDiv);
+                    });
+
+                    // Проверка уникальности юзернейма
+                    let isUsernameValid = false;
+                    profileUsername.addEventListener('input', async () => {
+                        const username = profileUsername.value.trim().toLowerCase();
+                        if (username.length < 3) {
+                            usernameError.textContent = 'Юзернейм должен быть не короче 3 символов';
+                            isUsernameValid = false;
+                            saveProfileBtn.disabled = true;
+                            return;
+                        }
+                        const usernameDoc = await db.collection('usernames').doc(username).get();
+                        if (usernameDoc.exists) {
+                            usernameError.textContent = 'Этот юзернейм уже занят';
+                            isUsernameValid = false;
+                            saveProfileBtn.disabled = true;
+                        } else {
+                            usernameError.textContent = '';
+                            isUsernameValid = true;
+                            saveProfileBtn.disabled = false;
+                        }
+                    });
+
+                    // Сохранение профиля
+                    saveProfileBtn.addEventListener('click', async () => {
+                        if (!isUsernameValid) return;
+                        const name = profileName.value.trim();
+                        const username = profileUsername.value.trim().toLowerCase();
+                        if (!name || !username) {
+                            usernameError.textContent = 'Заполните все поля';
+                            return;
+                        }
+
+                        try {
+                            // Сохраняем данные пользователя
+                            await db.collection('users').doc(user.uid).set({
+                                displayName: name,
+                                email: user.email,
+                                photoURL: selectedAvatar,
+                                username: username,
+                                lastLogin: firebase.firestore.FieldValue.serverTimestamp()
+                            }, { merge: true });
+
+                            // Сохраняем юзернейм
+                            await db.collection('usernames').doc(username).set({
+                                uid: user.uid
+                            });
+
+                            // Обновляем UI
+                            updateUI({
+                                displayName: name,
+                                photoURL: selectedAvatar
+                            });
+
+                            // Закрываем модальное окно
+                            document.getElementById('profileModal').style.display = 'none';
+                        } catch (error) {
+                            console.error("Ошибка сохранения профиля:", error);
+                            usernameError.textContent = 'Ошибка сохранения: ' + error.message;
+                        }
+                    });
+                }
+            }
         });
 
-        // Открытие модального окна
+        // Открытие модального окна входа/регистрации
         function openModal() {
             console.log("openModal called");
             if (auth && !auth.currentUser) {
@@ -326,6 +492,9 @@
         window.onclick = function(event) {
             if (event.target == document.getElementById('authModal')) {
                 document.getElementById('authModal').style.display = 'none';
+            }
+            if (event.target == document.getElementById('profileModal')) {
+                document.getElementById('profileModal').style.display = 'none';
             }
         }
     </script>
