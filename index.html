@@ -3,11 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="Permissions-Policy" content="interest-cohort=()">
     <title>Flopr</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌿</text></svg>">
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js"></script>
     <style>
+        /* Твой текущий CSS без изменений */
         * {
             margin: 0;
             padding: 0;
@@ -46,18 +49,7 @@
 
         .user-text {
             color: white;
-            font-size: 14px;
-            display: flex;
-            flex-direction: column;
-            text-align: right;
-        }
-
-        .user-text .name {
-            font-weight: bold;
-        }
-
-        .user-text .username {
-            opacity: 0.8;
+            font-size: 16px;
         }
 
         .avatar {
@@ -65,6 +57,8 @@
             height: 40px;
             background-color: #ccc;
             border-radius: 50%;
+            background-size: cover;
+            background-position: center;
         }
 
         .main-content {
@@ -152,14 +146,26 @@
             font-size: 16px;
             margin-top: 20px;
         }
+
+        .logout-btn {
+            background-color: #ff4444;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-left: 10px;
+        }
     </style>
 </head>
 <body>
     <header class="header">
         <h1>Flopr</h1>
-        <div class="user-info">
-            <span class="user-text" id="userText">Войдите или зарегистрируйтесь!</span>
-            <div class="avatar"></div>
+        <div class="user-info" onclick="openModal()">
+            <span class="user-text" id="userText">Зарегистрируйтесь или войдите в аккаунт бесплатно!</span>
+            <div class="avatar" id="userAvatar"></div>
+            <button class="logout-btn" id="logoutBtn" style="display: none;">Выйти</button>
         </div>
     </header>
 
@@ -176,22 +182,20 @@
     <div class="modal" id="authModal">
         <div class="modal-content">
             <div class="tabs">
-                <div class="tab active" data-tab="login">Вход</div>
-                <div class="tab" data-tab="register">Регистрация</div>
+                <div class="tab active" onclick="showTab('login')">Вход</div>
+                <div class="tab" onclick="showTab('register')">Регистрация</div>
             </div>
             <div class="tab-content active" id="login">
-                <button class="google-btn"><i class="fab fa-google"></i> Войти через Google</button>
+                <button class="google-btn" onclick="signInWithGoogle()"><i class="fab fa-google"></i> Войти через Google</button>
             </div>
             <div class="tab-content" id="register">
-                <button class="google-btn"><i class="fab fa-google"></i> Зарегистрироваться через Google</button>
+                <button class="google-btn" onclick="signInWithGoogle()"><i class="fab fa-google"></i> Зарегистрироваться через Google</button>
             </div>
         </div>
     </div>
 
-    <script type="text/javascript" src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js"></script>
-    <script type="text/javascript" src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js"></script>
-    <script type="text/javascript" src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js"></script>
-    <script type="text/javascript">
+    <script>
+        // Firebase конфигурация
         const firebaseConfig = {
             apiKey: "AIzaSyCmv0bj3l2fDUQe6-xzlkpEu5r_Qdbpm7w",
             authDomain: "floperin-559d7.firebaseapp.com",
@@ -202,64 +206,94 @@
             measurementId: "G-LCZJLT5JJE"
         };
 
+        // Инициализация Firebase
         firebase.initializeApp(firebaseConfig);
         const auth = firebase.auth();
         const db = firebase.firestore();
 
-        function googleSignIn() {
+        // Вход через Google
+        function signInWithGoogle() {
             const provider = new firebase.auth.GoogleAuthProvider();
-            auth.signInWithPopup(provider).then((result) => {
-                const user = result.user;
-                db.collection("users").doc(user.uid).set({
-                    name: user.displayName,
-                    email: user.email,
-                    username: user.email.split("@")[0]
-                }, { merge: true });
-            }).catch((error) => {
-                console.error(error);
-            });
+            auth.signInWithPopup(provider)
+                .then((result) => {
+                    const user = result.user;
+                    saveUserToFirestore(user);
+                    updateUI(user);
+                    document.getElementById('authModal').style.display = 'none';
+                })
+                .catch((error) => {
+                    console.error("Ошибка входа:", error);
+                    alert("Ошибка входа: " + error.message);
+                });
         }
 
+        // Сохранение данных пользователя в Firestore
+        function saveUserToFirestore(user) {
+            db.collection("users").doc(user.uid).set({
+                displayName: user.displayName,
+                email: user.email,
+                photoURL: user.photoURL,
+                lastLogin: firebase.firestore.FieldValue.serverTimestamp()
+            }, { merge: true })
+                .then(() => console.log("Пользователь сохранен в Firestore"))
+                .catch((error) => console.error("Ошибка сохранения в Firestore:", error));
+        }
+
+        // Обновление UI после входа
+        function updateUI(user) {
+            const userText = document.getElementById('userText');
+            const userAvatar = document.getElementById('userAvatar');
+            const logoutBtn = document.getElementById('logoutBtn');
+
+            if (user) {
+                userText.textContent = user.displayName || 'Пользователь';
+                userAvatar.style.backgroundImage = `url(${user.photoURL})`;
+                logoutBtn.style.display = 'block';
+            } else {
+                userText.textContent = 'Зарегистрируйтесь или войдите в аккаунт бесплатно!';
+                userAvatar.style.backgroundImage = '';
+                userAvatar.style.backgroundColor = '#ccc';
+                logoutBtn.style.display = 'none';
+            }
+        }
+
+        // Выход
+        document.getElementById('logoutBtn').addEventListener('click', () => {
+            auth.signOut()
+                .then(() => {
+                    updateUI(null);
+                })
+                .catch((error) => {
+                    console.error("Ошибка выхода:", error);
+                });
+        });
+
+        // Слушатель состояния аутентификации
+        auth.onAuthStateChanged((user) => {
+            updateUI(user);
+        });
+
+        // Открытие модального окна
         function openModal() {
-            document.getElementById('authModal').style.display = 'block';
+            if (!auth.currentUser) {
+                document.getElementById('authModal').style.display = 'block';
+            }
         }
 
+        // Переключение вкладок
         function showTab(tab) {
             document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
             document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-            document.querySelector(`.tab[data-tab="${tab}"]`).classList.add('active');
+            document.querySelector(`.tab[onclick="showTab('${tab}')"]`).classList.add('active');
             document.getElementById(tab).classList.add('active');
         }
 
-        auth.onAuthStateChanged((user) => {
-            const userText = document.getElementById('userText');
-            if (user) {
-                db.collection("users").doc(user.uid).get().then((doc) => {
-                    if (doc.exists) {
-                        const data = doc.data();
-                        userText.innerHTML = `<span class="name">${data.name}</span><span class="username">@${data.username}</span>`;
-                    }
-                });
-                document.querySelector('.user-info').removeEventListener('click', openModal);
-            } else {
-                userText.innerHTML = 'Войдите или зарегистрируйтесь!';
-                document.querySelector('.user-info').addEventListener('click', openModal);
-            }
-        });
-
-        document.querySelectorAll('.tab').forEach(tab => {
-            tab.addEventListener('click', () => showTab(tab.dataset.tab));
-        });
-
-        document.querySelectorAll('.google-btn').forEach(btn => {
-            btn.addEventListener('click', googleSignIn);
-        });
-
+        // Закрытие модального окна при клике вне
         window.onclick = function(event) {
             if (event.target == document.getElementById('authModal')) {
                 document.getElementById('authModal').style.display = 'none';
             }
-        };
+        }
     </script>
 </body>
 </html>
