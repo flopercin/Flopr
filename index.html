@@ -5,13 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Flopr</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-    <!-- Firebase CDN (совместимые версии) -->
     <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js"></script>
-    <!-- Google Sign-In -->
     <script src="https://accounts.google.com/gsi/client"></script>
-    <!-- Определение handleCredentialResponse до загрузки Google Sign-In -->
     <script>
         window.handleCredentialResponse = async (response) => {
             try {
@@ -34,12 +31,10 @@
             box-sizing: border-box;
             font-family: Arial, sans-serif;
         }
-
         body {
             background-color: #f0fff0;
             color: #333;
         }
-
         .header {
             background-color: #4caf50;
             padding: 15px 20px;
@@ -51,12 +46,10 @@
             top: 0;
             z-index: 1000;
         }
-
         .header h1 {
             color: white;
             font-size: 24px;
         }
-
         .user-info {
             display: flex;
             align-items: center;
@@ -65,7 +58,6 @@
             max-width: 200px;
             justify-content: flex-end;
         }
-
         .user-text {
             color: white;
             font-size: 10px;
@@ -73,7 +65,6 @@
             white-space: normal;
             text-align: right;
         }
-
         .avatar {
             width: 40px;
             height: 40px;
@@ -82,14 +73,12 @@
             background-size: cover;
             background-position: center;
         }
-
         .main-content {
             margin-top: 70px;
             margin-bottom: 60px;
             padding: 20px;
             min-height: calc(100vh - 130px);
         }
-
         .footer {
             background-color: #4caf50;
             padding: 10px 20px;
@@ -101,13 +90,11 @@
             align-items: center;
             padding-left: 10px;
         }
-
         .footer a {
             color: white;
             font-size: 24px;
             text-decoration: none;
         }
-
         .plus-btn {
             border: 2px solid white;
             border-radius: 50%;
@@ -117,7 +104,6 @@
             justify-content: center;
             align-items: center;
         }
-
         .modal {
             display: none;
             position: fixed;
@@ -128,7 +114,6 @@
             background-color: rgba(0, 0, 0, 0.5);
             z-index: 2000;
         }
-
         .modal-content {
             background-color: white;
             width: 90%;
@@ -137,12 +122,10 @@
             border-radius: 10px;
             overflow: hidden;
         }
-
         .tabs {
             display: flex;
             border-bottom: 1px solid #ddd;
         }
-
         .tab {
             flex: 1;
             padding: 15px;
@@ -151,22 +134,18 @@
             background-color: #f5f5f5;
             color: #333;
         }
-
         .tab.active {
             background-color: white;
             color: #4caf50;
             border-bottom: 2px solid #4caf50;
         }
-
         .tab-content {
             padding: 20px;
             display: none;
         }
-
         .tab-content.active {
             display: block;
         }
-
         .logout-btn {
             background-color: #ff4444;
             color: white;
@@ -177,18 +156,14 @@
             font-size: 16px;
             margin-left: 10px;
         }
-
-        /* Стили для модального окна профиля */
         .profile-modal-content {
             padding: 20px;
             text-align: center;
         }
-
         .profile-modal-content h2 {
             margin-bottom: 20px;
             color: #4caf50;
         }
-
         .profile-modal-content input {
             width: 100%;
             padding: 10px;
@@ -196,29 +171,18 @@
             border: 1px solid #ddd;
             border-radius: 5px;
         }
-
-        .avatar-gallery {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            justify-content: center;
-            margin: 20px 0;
-        }
-
-        .avatar-option {
-            width: 60px;
-            height: 60px;
+        .avatar-preview {
+            width: 80px;
+            height: 80px;
             border-radius: 50%;
             background-size: cover;
             background-position: center;
-            cursor: pointer;
-            border: 2px solid transparent;
+            margin: 10px auto;
+            border: 2px solid #4caf50;
         }
-
-        .avatar-option.selected {
-            border-color: #4caf50;
+        .avatar-input {
+            margin: 10px 0;
         }
-
         .save-profile-btn {
             background-color: #4caf50;
             color: white;
@@ -228,12 +192,10 @@
             cursor: pointer;
             font-size: 16px;
         }
-
         .save-profile-btn:disabled {
             background-color: #ccc;
             cursor: not-allowed;
         }
-
         .error-message {
             color: #ff4444;
             font-size: 14px;
@@ -250,10 +212,7 @@
             <button class="logout-btn" id="logoutBtn" style="display: none;">Выйти</button>
         </div>
     </header>
-
-    <main class="main-content">
-    </main>
-
+    <main class="main-content"></main>
     <footer class="footer">
         <a href="#"><i class="fas fa-home"></i></a>
         <a href="#"><i class="fas fa-comments"></i></a>
@@ -261,8 +220,6 @@
         <a href="#"><i class="fas fa-search"></i></a>
         <a href="#"><i class="fas fa-cog"></i></a>
     </footer>
-
-    <!-- Модальное окно для входа/регистрации -->
     <div class="modal" id="authModal">
         <div class="modal-content">
             <div class="tabs">
@@ -301,23 +258,18 @@
             </div>
         </div>
     </div>
-
-    <!-- Модальное окно для настройки профиля -->
     <div class="modal" id="profileModal">
         <div class="modal-content profile-modal-content">
             <h2>Настройка профиля</h2>
             <input type="text" id="profileName" placeholder="Ваше имя">
-            <input type="text" id="profileUsername" placeholder="Юзернейм">
-            <div class="avatar-gallery" id="avatarGallery">
-                <!-- Аватарки будут добавлены через JS -->
-            </div>
+            <input type="text" id="profileUsername" placeholder="Юзернейм (a-z, 0-9, max 20)">
+            <div class="avatar-preview" id="avatarPreview"></div>
+            <input type="file" id="avatarInput" class="avatar-input" accept="image/*">
             <button class="save-profile-btn" id="saveProfileBtn" disabled>Сохранить</button>
             <p class="error-message" id="usernameError"></p>
         </div>
     </div>
-
     <script>
-        // Firebase конфигурация
         const firebaseConfig = {
             apiKey: "AIzaSyCmv0bj3l2fDUQe6-xzlkpEu5r_Qdbpm7w",
             authDomain: "floperin-559d7.firebaseapp.com",
@@ -327,26 +279,15 @@
             appId: "1:313128941793:web:2a33815852477fa136dfa0",
             measurementId: "G-LCZJLT5JJE"
         };
-
-        // Инициализация Firebase
         firebase.initializeApp(firebaseConfig);
         const auth = firebase.auth();
         const db = firebase.firestore();
-
-        // Список аватарок для галереи (замени на свои URL)
-        const avatarOptions = [
-            'https://via.placeholder.com/60/FF0000/FFFFFF?text=A1',
-            'https://via.placeholder.com/60/00FF00/FFFFFF?text=A2',
-            'https://via.placeholder.com/60/0000FF/FFFFFF?text=A3',
-            'https://via.placeholder.com/60/FFFF00/FFFFFF?text=A4'
-        ];
-
-        // Обновление UI после входа
+        const CLOUDINARY_URL = 'https://api.cloudinary.com/v1_1/dzhjztqsd/image/upload';
+        const CLOUDINARY_PRESET = 'my_flopr';
         function updateUI(user) {
             const userText = document.getElementById('userText');
             const userAvatar = document.getElementById('userAvatar');
             const logoutBtn = document.getElementById('logoutBtn');
-
             if (user) {
                 userText.textContent = user.displayName || 'Пользователь';
                 userAvatar.style.backgroundImage = `url(${user.photoURL})`;
@@ -358,8 +299,6 @@
                 logoutBtn.style.display = 'none';
             }
         }
-
-        // Выход
         document.getElementById('logoutBtn').addEventListener('click', () => {
             auth.signOut()
                 .then(() => {
@@ -369,51 +308,46 @@
                     console.error("Ошибка выхода:", error);
                 });
         });
-
-        // Проверка нового пользователя и показ модального окна профиля
         auth.onAuthStateChanged(async (user) => {
             console.log("Auth state changed:", user);
             updateUI(user);
             if (user) {
                 const userDoc = await db.collection('users').doc(user.uid).get();
                 if (!userDoc.exists) {
-                    // Новый пользователь, показываем модальное окно
                     document.getElementById('profileModal').style.display = 'block';
                     const profileName = document.getElementById('profileName');
                     const profileUsername = document.getElementById('profileUsername');
-                    const avatarGallery = document.getElementById('avatarGallery');
+                    const avatarPreview = document.getElementById('avatarPreview');
+                    const avatarInput = document.getElementById('avatarInput');
                     const saveProfileBtn = document.getElementById('saveProfileBtn');
                     const usernameError = document.getElementById('usernameError');
-
-                    // Заполняем начальные данные из Google
                     profileName.value = user.displayName || '';
-                    profileUsername.value = user.displayName ? user.displayName.replace(/\s+/g, '').toLowerCase() : '';
-                    let selectedAvatar = user.photoURL || avatarOptions[0];
-
-                    // Создаём галерею аватарок
-                    avatarGallery.innerHTML = '';
-                    avatarOptions.forEach((url, index) => {
-                        const avatarDiv = document.createElement('div');
-                        avatarDiv.className = 'avatar-option';
-                        avatarDiv.style.backgroundImage = `url(${url})`;
-                        if (url === selectedAvatar) {
-                            avatarDiv.className += ' selected';
+                    profileUsername.value = user.displayName ? user.displayName.replace(/[^a-zA-Z0-9]/g, '').toLowerCase().slice(0, 20) : '';
+                    let selectedAvatar = user.photoURL || '';
+                    avatarPreview.style.backgroundImage = `url(${selectedAvatar})`;
+                    avatarInput.addEventListener('change', (e) => {
+                        const file = e.target.files[0];
+                        if (file) {
+                            if (file.size > 3000000) {
+                                usernameError.textContent = 'Изображение не должно превышать 3 МБ';
+                                saveProfileBtn.disabled = true;
+                                return;
+                            }
+                            const reader = new FileReader();
+                            reader.onload = (event) => {
+                                selectedAvatar = event.target.result;
+                                avatarPreview.style.backgroundImage = `url(${selectedAvatar})`;
+                                saveProfileBtn.disabled = false;
+                            };
+                            reader.readAsDataURL(file);
                         }
-                        avatarDiv.addEventListener('click', () => {
-                            document.querySelectorAll('.avatar-option').forEach(opt => opt.classList.remove('selected'));
-                            avatarDiv.classList.add('selected');
-                            selectedAvatar = url;
-                            saveProfileBtn.disabled = false;
-                        });
-                        avatarGallery.appendChild(avatarDiv);
                     });
-
-                    // Проверка уникальности юзернейма
                     let isUsernameValid = false;
                     profileUsername.addEventListener('input', async () => {
                         const username = profileUsername.value.trim().toLowerCase();
-                        if (username.length < 3) {
-                            usernameError.textContent = 'Юзернейм должен быть не короче 3 символов';
+                        const usernameRegex = /^[a-zA-Z0-9]{1,20}$/;
+                        if (!usernameRegex.test(username)) {
+                            usernameError.textContent = 'Только английские буквы и цифры, до 20 символов';
                             isUsernameValid = false;
                             saveProfileBtn.disabled = true;
                             return;
@@ -426,42 +360,48 @@
                         } else {
                             usernameError.textContent = '';
                             isUsernameValid = true;
-                            saveProfileBtn.disabled = false;
+                            saveProfileBtn.disabled = !selectedAvatar;
                         }
                     });
-
-                    // Сохранение профиля
                     saveProfileBtn.addEventListener('click', async () => {
-                        if (!isUsernameValid) return;
+                        if (!isUsernameValid || !selectedAvatar) return;
                         const name = profileName.value.trim();
                         const username = profileUsername.value.trim().toLowerCase();
                         if (!name || !username) {
                             usernameError.textContent = 'Заполните все поля';
                             return;
                         }
-
                         try {
-                            // Сохраняем данные пользователя
+                            let photoURL = user.photoURL;
+                            if (avatarInput.files[0]) {
+                                const formData = new FormData();
+                                formData.append('file', avatarInput.files[0]);
+                                formData.append('upload_preset', CLOUDINARY_PRESET);
+                                const response = await fetch(CLOUDINARY_URL, {
+                                    method: 'POST',
+                                    body: formData
+                                });
+                                const data = await response.json();
+                                if (data.secure_url) {
+                                    photoURL = data.secure_url;
+                                } else {
+                                    throw new Error('Ошибка загрузки аватарки');
+                                }
+                            }
                             await db.collection('users').doc(user.uid).set({
                                 displayName: name,
                                 email: user.email,
-                                photoURL: selectedAvatar,
+                                photoURL: photoURL,
                                 username: username,
                                 lastLogin: firebase.firestore.FieldValue.serverTimestamp()
                             }, { merge: true });
-
-                            // Сохраняем юзернейм
                             await db.collection('usernames').doc(username).set({
                                 uid: user.uid
                             });
-
-                            // Обновляем UI
                             updateUI({
                                 displayName: name,
-                                photoURL: selectedAvatar
+                                photoURL: photoURL
                             });
-
-                            // Закрываем модальное окно
                             document.getElementById('profileModal').style.display = 'none';
                         } catch (error) {
                             console.error("Ошибка сохранения профиля:", error);
@@ -471,24 +411,18 @@
                 }
             }
         });
-
-        // Открытие модального окна входа/регистрации
         function openModal() {
             console.log("openModal called");
             if (auth && !auth.currentUser) {
                 document.getElementById('authModal').style.display = 'block';
             }
         }
-
-        // Переключение вкладок
         function showTab(tab) {
             document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
             document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
             document.querySelector(`.tab[onclick="showTab('${tab}')"]`).classList.add('active');
             document.getElementById(tab).classList.add('active');
         }
-
-        // Закрытие модального окна при клике вне
         window.onclick = function(event) {
             if (event.target == document.getElementById('authModal')) {
                 document.getElementById('authModal').style.display = 'none';
@@ -499,4 +433,4 @@
         }
     </script>
 </body>
-</html>
+            </html>
