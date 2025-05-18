@@ -25,15 +25,8 @@
         h1 {
             font-size: 2.5em;
             text-align: center;
-            margin-bottom: 20px;
-            text-shadow: 2px 2px #1a5c38;
-        }
-        img.main-img {
-            max-width: 300px;
-            border: 5px solid #ffffff;
-            border-radius: 10px;
             margin-bottom: 30px;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+            text-shadow: 2px 2px #1a5c38;
         }
         a {
             text-decoration: none;
@@ -98,13 +91,13 @@
             right: 5px;
             background: #ff4444;
             color: #ffffff;
-            border: none;
-            border-radius: 50%;
+            border: 2px solid #1a5c38;
+            border-radius: 5px;
             width: 20px;
             height: 20px;
             cursor: pointer;
             font-size: 0.8em;
-            line-height: 20px;
+            line-height: 18px;
             text-align: center;
         }
         @keyframes fadeIn {
@@ -115,14 +108,14 @@
 </head>
 <body>
     <h1>Get key for FloprHub</h1>
-    <img class="main-img" src="images/image.png" alt="FloprHub Image">
     <a href="https://t.me/FloprHub/20"><button>Get key!</button></a>
 
     <script>
         const messages = [
             { text: "Вы выиграли 3000000 долларов", img: "https://steamuserimages-a.akamaihd.net/ugc/40065103222256755/7CC1A99420139D9EBB735B64B64F9E253994869F/?imw=512&imh=505&ima=fit&impolicy=Letterbox&imcolor=%23000000&letterbox=true" },
             { text: "Тётя Люба 20 метров от вас", img: "https://memepedia.ru/wp-content/uploads/2025/05/okak-mem.jpg" },
-            { text: "Получить кредит 20% годовых", img: "https://steamuserimages-a.akamaihd.net/ugc/40065103222256755/7CC1A99420139D9EBB735B64B64F9E253994869F/?imw=512&imh=505&ima=fit&impolicy=Letterbox&imcolor=%23000000&letterbox=true" }
+            { text: "Получить кредит 20% годовых", img: "https://steamuserimages-a.akamaihd.net/ugc/40065103222256755/7CC1A99420139D9EBB735B64B64F9E253994869F/?imw=512&imh=505&ima=fit&impolicy=Letterbox&imcolor=%23000000&letterbox=true" },
+            { text: "Вы проебали всё деньги, поздравляем!", img: "https://avatars.mds.yandex.net/i?id=3b959bb8684e88f9cee4e05b435f619a_l-10850463-images-thumbs&n=13" }
         ];
 
         function createPopup() {
