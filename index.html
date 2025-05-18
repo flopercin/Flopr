@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -20,6 +20,7 @@
             background: linear-gradient(135deg, #2ecc71, #27ae60);
             font-family: 'Pixel', sans-serif;
             color: #ffffff;
+            overflow: hidden;
         }
         h1 {
             font-size: 2.5em;
@@ -27,7 +28,7 @@
             margin-bottom: 20px;
             text-shadow: 2px 2px #1a5c38;
         }
-        img {
+        img.main-img {
             max-width: 300px;
             border: 5px solid #ffffff;
             border-radius: 10px;
@@ -69,11 +70,77 @@
         button:hover::before {
             left: 100%;
         }
+        .popup {
+            position: fixed;
+            background: #ffffff;
+            color: #2ecc71;
+            padding: 15px;
+            border-radius: 10px;
+            border: 3px solid #1a5c38;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            max-width: 300px;
+            animation: fadeIn 0.5s;
+            z-index: 1000;
+        }
+        .popup img {
+            max-width: 100px;
+            margin-right: 10px;
+        }
+        .popup-text {
+            font-size: 0.9em;
+            font-family: 'Pixel', sans-serif;
+        }
+        .close-btn {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background: #ff4444;
+            color: #ffffff;
+            border: none;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            font-size: 0.8em;
+            line-height: 20px;
+            text-align: center;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
     </style>
 </head>
 <body>
     <h1>Get key for FloprHub</h1>
-    <img src="images/image.img" alt="FloprHub Image">
+    <img class="main-img" src="images/image.png" alt="FloprHub Image">
     <a href="https://t.me/FloprHub/20"><button>Get key!</button></a>
+
+    <script>
+        const messages = [
+            { text: "Вы выиграли 3000000 долларов", img: "https://steamuserimages-a.akamaihd.net/ugc/40065103222256755/7CC1A99420139D9EBB735B64B64F9E253994869F/?imw=512&imh=505&ima=fit&impolicy=Letterbox&imcolor=%23000000&letterbox=true" },
+            { text: "Тётя Люба 20 метров от вас", img: "https://memepedia.ru/wp-content/uploads/2025/05/okak-mem.jpg" },
+            { text: "Получить кредит 20% годовых", img: "https://steamuserimages-a.akamaihd.net/ugc/40065103222256755/7CC1A99420139D9EBB735B64B64F9E253994869F/?imw=512&imh=505&ima=fit&impolicy=Letterbox&imcolor=%23000000&letterbox=true" }
+        ];
+
+        function createPopup() {
+            const popup = document.createElement('div');
+            popup.className = 'popup';
+            const randomMessage = messages[Math.floor(Math.random() * messages.length)];
+            popup.style.left = Math.random() * (window.innerWidth - 300) + 'px';
+            popup.style.top = Math.random() * (window.innerHeight - 200) + 'px';
+            popup.innerHTML = `
+                <img src="${randomMessage.img}" alt="Popup Image">
+                <span class="popup-text">${randomMessage.text}</span>
+                <button class="close-btn" onclick="this.parentElement.remove()">✖</button>
+            `;
+            document.body.appendChild(popup);
+            setTimeout(() => popup.remove(), 5000);
+        }
+
+        setInterval(createPopup, 3000);
+    </script>
 </body>
 </html>
