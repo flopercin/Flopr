@@ -76,6 +76,7 @@
             max-width: 300px;
             animation: fadeIn 0.5s;
             z-index: 1000;
+            cursor: pointer;
         }
         .popup img {
             max-width: 100px;
@@ -93,11 +94,11 @@
             color: #ffffff;
             border: 2px solid #1a5c38;
             border-radius: 5px;
-            width: 20px;
-            height: 20px;
+            width: 15px;
+            height: 15px;
             cursor: pointer;
-            font-size: 0.8em;
-            line-height: 18px;
+            font-size: 0.6em;
+            line-height: 13px;
             text-align: center;
         }
         @keyframes fadeIn {
@@ -129,11 +130,12 @@
                 <span class="popup-text">${randomMessage.text}</span>
                 <button class="close-btn" onclick="this.parentElement.remove()">✖</button>
             `;
+            popup.onclick = () => window.location.href = 'https://flopercin.github.io/Flopr/Kazino';
             document.body.appendChild(popup);
             setTimeout(() => popup.remove(), 5000);
         }
 
-        setInterval(createPopup, 3000);
+        setInterval(createPopup, 5000);
     </script>
 </body>
 </html>
