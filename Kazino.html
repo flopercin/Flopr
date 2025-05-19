@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Neon Casino</title>
+    <title>Flopr Casino</title>
     <style>
         * {
             margin: 0;
@@ -28,6 +28,14 @@
             width: 100%;
             max-width: 400px;
             box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .promo {
+            text-align: center;
+            color: #00ffff;
+            font-size: 14px;
+            margin-bottom: 20px;
+            text-shadow: 0 0 5px rgba(0, 255, 255, 0.5);
         }
 
         .logo {
@@ -89,6 +97,54 @@
             box-shadow: 0 0 15px rgba(255, 0, 255, 0.7);
         }
 
+        .social-login {
+            margin-top: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .social-btn {
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            color: #fff;
+            font-size: 14px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .google-btn {
+            background: #4285f4;
+        }
+
+        .google-btn:hover {
+            background: #3578e5;
+            box-shadow: 0 0 10px rgba(66, 133, 244, 0.7);
+        }
+
+        .vk-btn {
+            background: #4c75a3;
+        }
+
+        .vk-btn:hover {
+            background: #416893;
+            box-shadow: 0 0 10px rgba(76, 117, 163, 0.7);
+        }
+
+        .facebook-btn {
+            background: #3b5998;
+        }
+
+        .facebook-btn:hover {
+            background: #344e86;
+            box-shadow: 0 0 10px rgba(59, 89, 152, 0.7);
+        }
+
         .terms {
             color: #ccc;
             font-size: 12px;
@@ -119,8 +175,9 @@
 <body>
     <div class="glow"></div>
     <div class="container">
+        <p class="promo">При регистрации вы получаете кредит на свой счёт и 20 кредитов на ваших родных!</p>
         <div class="logo">
-            <h1>Neon Casino</h1>
+            <h1>Flopr Casino</h1>
         </div>
         <form>
             <div class="form-group">
@@ -140,6 +197,11 @@
                 <input type="password" id="confirm-password" placeholder="Повторите пароль">
             </div>
             <button type="submit">Зарегистрироваться</button>
+            <div class="social-login">
+                <button class="social-btn google-btn">Войти через Google</button>
+                <button class="social-btn vk-btn">Войти через ВКонтакте</button>
+                <button class="social-btn facebook-btn">Войти через Facebook</button>
+            </div>
             <p class="terms">Регистрируясь, вы соглашаетесь с <a href="#">условиями использования</a> и <a href="#">политикой конфиденциальности</a></p>
         </form>
     </div>
