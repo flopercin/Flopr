@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flopr</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f0f4f0;
+            color: #333;
+        }
+        .header {
+            background-color: #2e7d32;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .header .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #fff;
+        }
+        .nav {
+            display: flex;
+            gap: 20px;
+        }
+        .nav a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 16px;
+            padding: 8px 15px;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+        .nav a.active {
+            background-color: #4caf50;
+        }
+        .nav a.active:hover {
+            background-color: #66bb6a;
+        }
+        .nav a.disabled {
+            color: #a5d6a7;
+            cursor: not-allowed;
+        }
+        .main {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        .main h1 {
+            color: #2e7d32;
+        }
+        .main p {
+            font-size: 18px;
+            line-height: 1.6;
+        }
+        .footer {
+            background-color: #2e7d32;
+            color: #fff;
+            text-align: center;
+            padding: 10px 0;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+        @media (max-width: 768px) {
+            .nav {
+                flex-direction: column;
+                gap: 10px;
+            }
+            .header {
+                flex-direction: column;
+                gap: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="logo">Flopr</div>
+        <div class="nav">
+            <a href="https://flopercin.github.io/Flopr/GetKey" class="active">Get Key</a>
+            <a href="https://flopercin.github.io/Flopr/Kazino" class="active">Kasino</a>
+            <a href="#" class="disabled">Exploits</a>
+            <a href="#" class="disabled">Chats</a>
+            <a href="#" class="disabled">Scripts</a>
+            <a href="#" class="disabled">Upload</a>
+            <a href="#" class="disabled">Info</a>
+        </div>
+    </div>
+    <div class="main">
+        <h1>Добро пожаловать на Flopr</h1>
+        <p>Ваш универсальный центр для различных сервисов и инструментов. Используйте кнопки вверху для навигации.</p>
+    </div>
+    <div class="footer">
+        &copy; 2025 Flopr. Все права защищены.
+    </div>
+</body>
+</html>
