@@ -3,105 +3,160 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Flopr</title>
+    <title>Flopr Site</title>
     <style>
-        body {
+        * {
             margin: 0;
-            font-family: Arial, sans-serif;
-            background-color: #f0f4f0;
-            color: #333;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
         }
-        .header {
-            background-color: #2e7d32;
-            padding: 15px 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-        .header .logo {
-            font-size: 24px;
-            font-weight: bold;
+
+        body {
+            background: linear-gradient(135deg, #1a1a1a, #2e2e2e);
             color: #fff;
-        }
-        .nav {
+            min-height: 100vh;
             display: flex;
-            gap: 20px;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
         }
-        .nav a {
+
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: #000;
+            padding: 15px 0;
+            box-shadow: 0 2px 5px rgba(255, 0, 0, 0.3);
+            z-index: 1000;
+        }
+
+        .nav-links {
+            display: flex;
+            justify-content: flex-end;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .nav-links a {
             color: #fff;
             text-decoration: none;
-            font-size: 16px;
-            padding: 8px 15px;
+            margin: 0 15px;
+            padding: 10px 20px;
             border-radius: 5px;
-            transition: background-color 0.3s;
-        }
-        .nav a.active {
-            background-color: #4caf50;
-        }
-        .nav a.active:hover {
-            background-color: #66bb6a;
-        }
-        .nav a.disabled {
-            color: #a5d6a7;
-            cursor: not-allowed;
-        }
-        .main {
-            max-width: 1200px;
-            margin: 20px auto;
-            padding: 20px;
-            background-color: #fff;
-            border-radius: 8px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-            text-align: center;
-        }
-        .main h1 {
-            color: #2e7d32;
-        }
-        .main p {
+            transition: all 0.3s ease;
             font-size: 18px;
-            line-height: 1.6;
+            font-weight: 500;
         }
-        .footer {
-            background-color: #2e7d32;
-            color: #fff;
+
+        .nav-links a.active {
+            background: #ff0000;
+            color: #000;
+            box-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
+        }
+
+        .nav-links a.inactive {
+            background: #333;
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+
+        .nav-links a.active:hover {
+            background: #cc0000;
+            transform: translateY(-2px);
+        }
+
+        .container {
             text-align: center;
-            padding: 10px 0;
-            position: fixed;
-            bottom: 0;
-            width: 100%;
+            padding: 100px 20px;
+            max-width: 800px;
         }
+
+        h1 {
+            font-size: 48px;
+            color: #ff0000;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            margin-bottom: 20px;
+        }
+
+        p {
+            font-size: 20px;
+            color: #ccc;
+            margin-bottom: 40px;
+        }
+
+        .hero-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .hero-buttons a {
+            padding: 15px 30px;
+            font-size: 20px;
+            border-radius: 8px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .hero-buttons a.active {
+            background: #ff0000;
+            color: #000;
+            box-shadow: 0 0 15px rgba(255, 0, 0, 0.7);
+        }
+
+        .hero-buttons a.active:hover {
+            background: #cc0000;
+            transform: scale(1.05);
+        }
+
         @media (max-width: 768px) {
-            .nav {
-                flex-direction: column;
-                gap: 10px;
+            .nav-links {
+                justify-content: center;
+                flex-wrap: wrap;
             }
-            .header {
-                flex-direction: column;
-                gap: 15px;
+
+            .nav-links a {
+                margin: 5px;
+                padding: 8px 15px;
+                font-size: 16px;
+            }
+
+            h1 {
+                font-size: 36px;
+            }
+
+            p {
+                font-size: 18px;
+            }
+
+            .hero-buttons a {
+                padding: 12px 25px;
+                font-size: 18px;
             }
         }
     </style>
 </head>
 <body>
-    <div class="header">
-        <div class="logo">Flopr</div>
-        <div class="nav">
-            <a href="https://flopercin.github.io/Flopr/GetKey" class="active">Get Key</a>
-            <a href="https://flopercin.github.io/Flopr/Kazino" class="active">Kasino</a>
-            <a href="#" class="disabled">Exploits</a>
-            <a href="#" class="disabled">Chats</a>
-            <a href="#" class="disabled">Scripts</a>
-            <a href="#" class="disabled">Upload</a>
-            <a href="#" class="disabled">Info</a>
+    <div class="navbar">
+        <div class="nav-links">
+            <a href="#" class="inactive">Scripts</a>
+            <a href="#" class="inactive">Upload</a>
+            <a href="https://flopercin.github.io/Flopr/Getkey" class="active" target="_blank">Get key</a>
+            <a href="https://flopercin.github.io/Flopr/Kazino" class="active" target="_blank">Kasino</a>
+            <a href="#" class="inactive">Info</a>
         </div>
     </div>
-    <div class="main">
+
+    <div class="container">
         <h1>Добро пожаловать на Flopr</h1>
-        <p>Ваш универсальный центр для различных сервисов и инструментов. Используйте кнопки вверху для навигации.</p>
-    </div>
-    <div class="footer">
-        &copy; 2025 Flopr. Все права защищены.
+        <p>Ваш доступ к эксклюзивным функциям и развлечениям!</p>
+        <div class="hero-buttons">
+            <a href="https://flopercin.github.io/Flopr/Getkey" class="active" target="_blank">Get key</a>
+            <a href="https://flopercin.github.io/Flopr/Kazino" class="active" target="_blank">Kasino</a>
+        </div>
     </div>
 </body>
 </html>
