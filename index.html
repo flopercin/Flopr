@@ -81,35 +81,43 @@
             margin-bottom: 20px;
         }
 
-        p {
-            font-size: 20px;
-            color: #ccc;
-            margin-bottom: 40px;
+        .info-section {
+            display: none;
+            background: #222;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(255, 0, 0, 0.3);
+            margin-top: 20px;
+            text-align: left;
+            max-width: 400px;
         }
 
-        .hero-buttons {
+        .info-section.active {
+            display: block;
+        }
+
+        .info-section p {
+            font-size: 18px;
+            margin: 10px 0;
             display: flex;
-            justify-content: center;
-            gap: 20px;
+            align-items: center;
         }
 
-        .hero-buttons a {
-            padding: 15px 30px;
-            font-size: 20px;
-            border-radius: 8px;
+        .info-section a {
+            color: #ff0000;
             text-decoration: none;
-            transition: all 0.3s ease;
+            font-weight: bold;
         }
 
-        .hero-buttons a.active {
-            background: #ff0000;
-            color: #000;
-            box-shadow: 0 0 15px rgba(255, 0, 0, 0.7);
+        .info-section a:hover {
+            text-decoration: underline;
         }
 
-        .hero-buttons a.active:hover {
-            background: #cc0000;
-            transform: scale(1.05);
+        .telegram-icon {
+            width: 24px;
+            height: 24px;
+            margin-right: 10px;
+            fill: #ff0000;
         }
 
         @media (max-width: 768px) {
@@ -128,13 +136,9 @@
                 font-size: 36px;
             }
 
-            p {
-                font-size: 18px;
-            }
-
-            .hero-buttons a {
-                padding: 12px 25px;
-                font-size: 18px;
+            .info-section {
+                max-width: 100%;
+                padding: 15px;
             }
         }
     </style>
@@ -142,21 +146,45 @@
 <body>
     <div class="navbar">
         <div class="nav-links">
+            <a href="#" class="active" onclick="showMain()">Main</a>
             <a href="#" class="inactive">Scripts</a>
             <a href="#" class="inactive">Upload</a>
-            <a href="https://flopercin.github.io/Flopr/Getkey" class="active" target="_blank">Get key</a>
-            <a href="https://flopercin.github.io/Flopr/Kazino" class="active" target="_blank">Kasino</a>
-            <a href="#" class="inactive">Info</a>
+            <a href="#" class="inactive">Get key</a>
+            <a href="#" class="active" onclick="showInfo()">Info</a>
         </div>
     </div>
 
     <div class="container">
-        <h1>Добро пожаловать на Flopr</h1>
-        <p>Ваш доступ к эксклюзивным функциям и развлечениям!</p>
-        <div class="hero-buttons">
-            <a href="https://flopercin.github.io/Flopr/Getkey" class="active" target="_blank">Get key</a>
-            <a href="https://flopercin.github.io/Flopr/Kazino" class="active" target="_blank">Kasino</a>
+        <h1>Flopr</h1>
+        <div class="info-section" id="infoSection">
+            <p>
+                <svg class="telegram-icon" viewBox="0 0 24 24">
+                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.69 1.39-1.38 1.54-.58.12-1.02-.11-1.58-.46-.7-.45-1.09-.83-1.77-1.33-1.95-1.43-.69-2.22.29-3.51.09-.12 2.22-2.89 2.27-3.13.02-.1.01-.19-.05-.27-.06-.08-.15-.11-.24-.06-.13.07-2.22 1.39-6.27 4.09-.62.42-1.19.63-1.71.62-.38 0-1.03-.15-1.53-.28-.62-.16-1.11-.49-1.07-.52.03-.03.27-.23.71-.45 3.76-1.92 6.25-3.2 6.76-3.43 1.76-.79 2.13-.88 2.36-.88.06 0 .09.01.12.03.03.02.04.06.03.09z"/>
+                </svg>
+                Профиль: <a href="https://t.me/flopercin2" target="_blank">flopercin2</a>
+            </p>
+            <p>
+                <svg class="telegram-icon" viewBox="0 0 24 24">
+                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.69 1.39-1.38 1.54-.58.12-1.02-.11-1.58-.46-.7-.45-1.09-.83-1.77-1.33-1.95-1.43-.69-2.22.29-3.51.09-.12 2.22-2.89 2.27-3.13.02-.1.01-.19-.05-.27-.06-.08-.15-.11-.24-.06-.13.07-2.22 1.39-6.27 4.09-.62.42-1.19.63-1.71.62-.38 0-1.03-.15-1.53-.28-.62-.16-1.11-.49-1.07-.52.03-.03.27-.23.71-.45 3.76-1.92 6.25-3.2 6.76-3.43 1.76-.79 2.13-.88 2.36-.88.06 0 .09.01.12.03.03.02.04.06.03.09z"/>
+                </svg>
+                Канал: <a href="https://t.me/FloprHub" target="_blank">FloprHub</a>
+            </p>
         </div>
     </div>
+
+    <script>
+        const infoSection = document.getElementById('infoSection');
+        const infoButton = document.querySelector('a[onclick="showInfo()"]');
+
+        function showInfo() {
+            infoSection.classList.toggle('active');
+            infoButton.classList.toggle('active');
+        }
+
+        function showMain() {
+            infoSection.classList.remove('active');
+            infoButton.classList.remove('active');
+        }
+    </script>
 </body>
 </html>
