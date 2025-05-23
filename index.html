@@ -3,227 +3,191 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Flopr</title>
+    <title>Вход</title>
     <style>
-        * {
+        body {
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
-            font-family: 'Arial', sans-serif;
-        }
-
-        body {
-            background: linear-gradient(135deg, #1a1a1a, #2e2e2e);
-            color: #fff;
-            min-height: 100vh;
+            height: 100vh;
             display: flex;
-            flex-direction: column;
+            justify-content: center;
             align-items: center;
+            background-color: #17212B;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            color: #fff;
+        }
+        .container {
+            background-color: #2A3646;
+            padding: 30px;
+            border-radius: 12px;
+            max-width: 350px;
+            width: 100%;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            text-align: center;
+        }
+        .header {
+            font-size: 28px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: #5288C1;
+        }
+        input[type="email"], input[type="password"] {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border: none;
+            border-radius: 8px;
+            background-color: #3B4A5A;
+            color: #fff;
+            font-size: 16px;
+        }
+        input[type="email"]::placeholder, input[type="password"]::placeholder {
+            color: #A3BFFA;
+        }
+        .login-btn {
+            background-color: #5288C1;
+            color: #fff;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            width: 100%;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            margin: 10px 0;
+        }
+        .login-btn:hover {
+            background-color: #3A6EA5;
+        }
+        .google-btn {
+            margin: 20px 0;
+            display: flex;
             justify-content: center;
         }
-
-        .navbar {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            background: #000;
-            padding: 15px 0;
-            box-shadow: 0 2px 5px rgba(255, 0, 0, 0.3);
-            z-index: 1000;
+        #message {
+            margin-top: 15px;
+            font-size: 14px;
+            color: #FF6B6B;
         }
-
-        .nav-links {
-            display: flex;
-            justify-content: flex-end;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
-
-        .nav-links a {
-            color: #fff;
+        a {
+            color: #5288C1;
             text-decoration: none;
-            margin: 0 15px;
-            padding: 10px 20px;
-            border-radius: 5px;
-            transition: all 0.3s ease;
-            font-size: 18px;
-            font-weight: 500;
+            font-size: 14px;
         }
-
-        .nav-links a.active {
-            background: #ff0000;
-            color: #000;
-            box-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
-        }
-
-        .nav-links a.inactive {
-            background: #333;
-            cursor: not-allowed;
-            opacity: 0.6;
-        }
-
-        .nav-links a.active:hover {
-            background: #cc0000;
-            transform: translateY(-2px);
-        }
-
-        .container {
-            text-align: center;
-            padding: 100px 20px;
-            max-width: 800px;
-        }
-
-        h1 {
-            font-size: 48px;
-            color: #ff0000;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-            margin-bottom: 20px;
-        }
-
-        .info-section, .getkey-section {
-            display: none;
-            background: #222;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 0 15px rgba(255, 0, 0, 0.3);
-            margin-top: 20px;
-            text-align: left;
-            max-width: 400px;
-        }
-
-        .info-section.active, .getkey-section.active {
-            display: block;
-        }
-
-        .info-section p {
-            font-size: 18px;
-            margin: 10px 0;
-            display: flex;
-            align-items: center;
-        }
-
-        .info-section a, .getkey-section a {
-            color: #ff0000;
-            text-decoration: none;
-            font-weight: bold;
-        }
-
-        .info-section a:hover, .getkey-section a:hover {
+        a:hover {
             text-decoration: underline;
         }
-
-        .telegram-icon {
-            width: 24px;
-            height: 24px;
-            margin-right: 10px;
+        .divider {
+            margin: 20px 0;
+            color: #A3BFFA;
+            font-size: 14px;
+            position: relative;
         }
-
-        .getkey-section p {
-            font-size: 20px;
-            color: #fff;
-            text-align: center;
-            margin-bottom: 20px;
+        .divider::before, .divider::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            width: 40%;
+            height: 1px;
+            background-color: #A3BFFA;
         }
-
-        .getkey-section a {
-            display: inline-block;
-            padding: 15px 30px;
-            font-size: 20px;
-            border-radius: 8px;
-            background: #ff0000;
-            color: #000;
-            box-shadow: 0 0 15px rgba(255, 0, 0, 0.7);
-            transition: all 0.3s ease;
+        .divider::before {
+            left: 0;
         }
-
-        .getkey-section a:hover {
-            background: #cc0000;
-            transform: scale(1.05);
-        }
-
-        @media (max-width: 768px) {
-            .nav-links {
-                justify-content: center;
-                flex-wrap: wrap;
-            }
-
-            .nav-links a {
-                margin: 5px;
-                padding: 8px 15px;
-                font-size: 16px;
-            }
-
-            h1 {
-                font-size: 36px;
-            }
-
-            .info-section, .getkey-section {
-                max-width: 100%;
-                padding: 15px;
-            }
+        .divider::after {
+            right: 0;
         }
     </style>
+    <script type="module" src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js"></script>
+    <script type="module" src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js"></script>
+    <script src="https://accounts.google.com/gsi/client"></script>
 </head>
 <body>
-    <div class="navbar">
-        <div class="nav-links">
-            <a href="#" onclick="showMain()">Main</a>
-            <a href="#" class="inactive">Scripts</a>
-            <a href="#" class="inactive">Upload</a>
-            <a href="#" class="active" onclick="showGetKey()">Get key</a>
-            <a href="#" class="active" onclick="showInfo()">Info</a>
-        </div>
-    </div>
-
     <div class="container">
-        <h1>Flopr</h1>
-        <div class="info-section" id="infoSection">
-            <p>
-                <img src="https://avatars.mds.yandex.net/i?id=15cdcbc37bec1ddf0ab6bb08cbf82229_l-4590839-images-thumbs&n=13" class="telegram-icon" alt="Telegram">
-                Профиль: <a href="https://t.me/flopercin2" target="_blank">flopercin2</a>
-            </p>
-            <p>
-                <img src="https://avatars.mds.yandex.net/i?id=15cdcbc37bec1ddf0ab6bb08cbf82229_l-4590839-images-thumbs&n=13" class="telegram-icon" alt="Telegram">
-                Канал: <a href="https://t.me/FloprHub" target="_blank">FloprHub</a>
-            </p>
+        <div class="header">FloperIN</div>
+        <form id="login-form">
+            <input type="email" id="email" placeholder="Email" required>
+            <input type="password" id="password" placeholder="Пароль" required>
+            <button type="submit" class="login-btn">Войти</button>
+        </form>
+        <div class="divider">или</div>
+        <div class="google-btn">
+            <div id="g_id_onload"
+                 data-client_id="313128941793-nt4aclh5pca02d3p651v9r8fb3cqtsdh.apps.googleusercontent.com"
+                 data-callback="handleCredentialResponse"
+                 data-auto_prompt="false">
+            </div>
+            <div class="g_id_signin" 
+                 data-type="standard" 
+                 data-size="large" 
+                 data-theme="filled_blue" 
+                 data-text="sign_in_with" 
+                 data-shape="rectangular" 
+                 data-logo_alignment="left">
+            </div>
         </div>
-        <div class="getkey-section" id="getkeySection">
-            <p>Get key for FloprHub</p>
-            <a href="#" class="active">Get key</a>
-        </div>
+        <p id="message"></p>
+        <p>Нет аккаунта? <a href="register.html">Зарегистрируйтесь</a></p>
     </div>
 
-    <script>
-        const infoSection = document.getElementById('infoSection');
-        const getkeySection = document.getElementById('getkeySection');
-        const infoButton = document.querySelector('a[onclick="showInfo()"]');
-        const getkeyButton = document.querySelector('a[onclick="showGetKey()"]');
-        const mainButton = document.querySelector('a[onclick="showMain()"]');
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
+        import { getAuth, GoogleAuthProvider, signInWithCredential, signInWithEmailAndPassword, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js';
 
-        function showInfo() {
-            infoSection.classList.add('active');
-            getkeySection.classList.remove('active');
-            infoButton.classList.add('active');
-            getkeyButton.classList.remove('active');
-            mainButton.classList.remove('active');
-        }
+        const firebaseConfig = {
+            apiKey: "AIzaSyCmv0bj3l2fDUQe6-xzlkpEu5r_Qdbpm7w",
+            authDomain: "floperin-559d7.firebaseapp.com",
+            projectId: "floperin-559d7",
+            storageBucket: "floperin-559d7.firebasestorage.app",
+            messagingSenderId: "313128941793",
+            appId: "1:313128941793:web:2a33815852477fa136dfa0",
+            measurementId: "G-LCZJLT5JJE"
+        };
 
-        function showGetKey() {
-            getkeySection.classList.add('active');
-            infoSection.classList.remove('active');
-            getkeyButton.classList.add('active');
-            infoButton.classList.remove('active');
-            mainButton.classList.remove('active');
-        }
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const provider = new GoogleAuthProvider();
 
-        function showMain() {
-            infoSection.classList.remove('active');
-            getkeySection.classList.remove('active');
-            infoButton.classList.remove('active');
-            getkeyButton.classList.remove('active');
-            mainButton.classList.add('active');
-        }
+        // Проверка состояния авторизации
+        onAuthStateChanged(auth, (user) => {
+            console.log('Auth state changed:', user);
+            if (user) {
+                document.getElementById('message').textContent = `Вы вошли как: ${user.displayName || user.email} (${user.uid})`;
+                window.location.href = 'profile.html';
+            } else {
+                document.getElementById('message').textContent = 'Вы не вошли';
+            }
+        });
+
+        // Вход через Google
+        window.handleCredentialResponse = async (response) => {
+            try {
+                console.log('Google Sign-In Response:', response);
+                const idToken = response.credential;
+                const credential = GoogleAuthProvider.credential(idToken);
+                const result = await signInWithCredential(auth, credential);
+                console.log('Sign-in result:', result);
+                document.getElementById('message').textContent = 'Вход выполнен!';
+            } catch (error) {
+                document.getElementById('message').textContent = `Ошибка: ${error.message}`;
+                console.error('Ошибка входа:', error);
+            }
+        };
+
+        // Вход через email и пароль
+        document.getElementById('login-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            try {
+                const userCredential = await signInWithEmailAndPassword(auth, email, password);
+                console.log('Email Sign-In result:', userCredential);
+                document.getElementById('message').textContent = 'Вход выполнен!';
+            } catch (error) {
+                document.getElementById('message').textContent = `Ошибка: ${error.message}`;
+                console.error('Ошибка входа:', error);
+            }
+        });
     </script>
 </body>
 </html>
